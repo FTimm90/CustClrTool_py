@@ -58,7 +58,7 @@ def Clrs_found(lbl):
 version_label = ctk.CTkLabel(master=bottom_bar, 
                              width=200, 
                              anchor="e", 
-                             text="v 1.0", 
+                             text="v 1.1", 
                              padx=10, 
                              text_color="#6D6D6D")
 version_label.pack(side="right")
@@ -84,13 +84,83 @@ CustClrBtn = ctk.CTkButton(master=left_frame,
                             text="Custom Colors", 
                             fg_color="#1f1f1f",
                             text_color="#A3A3A3", 
-                            width=200, 
+                            width=180, 
                             height=50, 
                             corner_radius=0, 
                             anchor="w",
                             compound="left",
                             hover=False)
 CustClrBtn.pack(side="top", padx=30, pady=20)
+
+step_1 = "Click the 'Choose file' button and select either a .pptx or a .potx file."
+
+step_2 = "From the dropdown list, select the correct theme.xml file to edit its custom colors."
+
+step_3 = "The color tiles below are now active. Enter a color name in the field above each tile and its hex value in the field below. Use the switch to add or remove colors."
+
+step_4 = "When you've finished making changes, click the 'Confirm' button."
+
+user_manual = ctk.CTkFrame(master=left_frame, 
+                            corner_radius=0, 
+                            fg_color="#1f1f1f",
+                            width=200)
+user_manual.pack(padx=30, expand=False)
+
+step_1_label = manual.manualClass(manual_master=user_manual)
+step_1_label.number_label(manual_master=user_manual)
+step_1_label.manual_number_label.configure(text="1.")
+
+step_1_text = manual.manualClass(manual_master=user_manual)
+step_1_text.text_label(manual_master=user_manual)
+step_1_text.manual_text_label.configure(text=step_1)
+
+step_2_label = manual.manualClass(manual_master=user_manual)
+step_2_label.number_label(manual_master=user_manual)
+step_2_label.manual_number_label.configure(text="2.")
+
+step_2_text = manual.manualClass(manual_master=user_manual)
+step_2_text.text_label(manual_master=user_manual)
+step_2_text.manual_text_label.configure(text=step_2)
+
+step_3_label = manual.manualClass(manual_master=user_manual)
+step_3_label.number_label(manual_master=user_manual)
+step_3_label.manual_number_label.configure(text="3.")
+
+step_3_text = manual.manualClass(manual_master=user_manual)
+step_3_text.text_label(manual_master=user_manual)
+step_3_text.manual_text_label.configure(text=step_3)
+
+step_4_label = manual.manualClass(manual_master=user_manual)
+step_4_label.number_label(manual_master=user_manual)
+step_4_label.manual_number_label.configure(text="4.")
+
+step_4_text = manual.manualClass(manual_master=user_manual)
+step_4_text.text_label(manual_master=user_manual)
+step_4_text.manual_text_label.configure(text=step_4)
+
+warning_text = """Note: To avoid unintended changes, please work on a copy of your presentation. 
+
+If you close the tool without confirming your changes, the presentation file might become corrupted with a .zip extension. You can easily restore it to its original format. 
+
+Important: Ensure the presentation is closed before adding custom colors."""
+
+warning_label_frame = ctk.CTkFrame(master=left_frame, 
+                                   corner_radius=0, 
+                                   border_width=1, 
+                                   border_color="red", 
+                                   width=150, 
+                                   fg_color="#1f1f1f")
+warning_label_frame.pack(padx=20, pady=20)
+
+warning_label = ctk.CTkLabel(master=warning_label_frame, 
+                             text=warning_text, 
+                             corner_radius=0, 
+                             text_color="red", 
+                             font=("Roboto", 10), 
+                             compound="left", 
+                             justify="left")
+warning_label.configure(wraplength=160)
+warning_label.pack(padx=10, pady=10)
 
 content_area = ctk.CTkFrame(master=window, 
                             corner_radius=0, 

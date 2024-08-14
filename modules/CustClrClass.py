@@ -38,7 +38,7 @@ class CustClr():
                                        corner_radius=0, 
                                        border_width=0, 
                                        fg_color="#181818")
-        Clr_widget_base.grid(row=Clr_table_row, column=Clr_table_column, padx=2, pady=5)
+        Clr_widget_base.grid(row=Clr_table_row, column=Clr_table_column, padx=4, pady=5)
 
         self.name_entry = ctk.CTkEntry(master=Clr_widget_base, 
                                   placeholder_text=f"Color name", 
@@ -47,7 +47,9 @@ class CustClr():
                                   height=20, 
                                   corner_radius=0, 
                                   border_width=0, 
-                                  fg_color="#141414")
+                                  fg_color="#141414",
+                                  text_color="white",
+                                  state="disabled")
         self.name_entry.pack(pady=2)
         self.name_entry_fields.append(self.name_entry)
 
@@ -55,7 +57,7 @@ class CustClr():
             print("switch toggled, current value:", self.switch_var.get())
 
         self.switch_var = ctk.StringVar(value="off")
-        switch = ctk.CTkSwitch(Clr_widget_base, 
+        self.switch = ctk.CTkSwitch(Clr_widget_base, 
                                 text=" ",
                                 height=10,
                                 width=20,
@@ -65,8 +67,9 @@ class CustClr():
                                 variable=self.switch_var,
                                 onvalue="on", 
                                 progress_color="#76AE22",
-                                offvalue="off")
-        switch.pack(anchor="center")
+                                offvalue="off",
+                                state="disabled")
+        self.switch.pack(anchor="center")
         self.switch_vars.append(self.switch_var)
 
         color_field = ctk.CTkFrame(master=Clr_widget_base, 
@@ -93,7 +96,9 @@ class CustClr():
                                  height=15, 
                                  corner_radius=0, 
                                  border_width=0, 
-                                 fg_color="#141414")
+                                 fg_color="#141414",
+                                 text_color="white",
+                                 state="disabled")
         self.hex_entry.pack(pady=5)
         self.hex_entry_fields.append(self.hex_entry)
 
@@ -121,6 +126,16 @@ class CustClr():
         self.hex_entry.bind("<Return>", create_lambda(color_field, self.hex_entry))
 
         return Clr_widget_base
+
+    def activate_fields(self):
+        self.hex_entry.configure(state="normal")
+        self.name_entry.configure(state="normal")
+        self.switch.configure(state="normal")
+
+    def deactivate_fields(self):
+        self.hex_entry.configure(state="disabled")
+        self.name_entry.configure(state="disabled")
+        self.switch.configure(state="disabled")
 
     def update_color_field_xml(self, Clr_hex):
 
