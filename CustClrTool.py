@@ -270,10 +270,10 @@ def theme_name_label_func(lbl):
     switch_states = pptx_instance.complete_state_list()
 
     for instance, fg_color in zip(CustClr_instances, fg_color_list):
-        instance.update_color_field_xml(Clr_hex=fg_color)
+        instance.update_color_field_xml(clr_hex=fg_color)
 
     for instance, name in zip(CustClr_instances, clr_namelist):
-        instance.update_color_name_field_xml(Clr_name=name)
+        instance.update_color_name_field_xml(clr_name=name)
 
     for instance, switch_state in zip(CustClr_instances, switch_states):
         instance.update_switches(switch_states=switch_state)
@@ -293,12 +293,12 @@ CustClr_instances = []
 for row in range(5):
     """This creates the table that holds the 50 color fields"""
     for column in range(10):
-        CustClr_instance = CustClrClass.CustClr(Clr_master=Color_field_frame,
-                                                Clr_table_row=row,
-                                                Clr_table_column=column)
-        CustClr_instance.CustClr_Widget(Clr_master=Color_field_frame,
-                                        Clr_table_row=row,
-                                        Clr_table_column=column)
+        CustClr_instance = CustClrClass.CustClr(clr_master=Color_field_frame,
+                                                clr_table_row=row,
+                                                clr_table_column=column)
+        CustClr_instance.custclr_widget(clr_master=Color_field_frame,
+                                        clr_table_row=row,
+                                        clr_table_column=column)
         CustClr_instances.append(CustClr_instance)
 
 def construct_output_strings(CustClr_instances):
@@ -327,7 +327,7 @@ def final_output_function():
 def clear_color_fields():
     """This function is for clearing the color fields if a new file is opened"""
     for instance in CustClr_instances:
-        instance.clear_all_CustClr()
+        instance.clear_all_custclr()
 
 def confirm():
     """Confirmation function for the actual confirm button"""

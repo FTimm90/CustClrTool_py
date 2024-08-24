@@ -5,44 +5,41 @@ class CustClr():
     """This class is for constructing the color tiles and storing all necessary information"""
 
     def __init__(self,
-                 Clr_master,
-                 Clr_table_row,
-                 Clr_table_column,
-                 Clr_number=None,
-                 Clr_name=None,
-                 Clr_hex=None,
-                 Clr_switch=None,
+                 clr_master,
+                 clr_table_row,
+                 clr_table_column,
+                 clr_name=None,
+                 clr_hex=None,
                  name_entry=None,
                  hex_entry=None,
                  switch_var=None):
 
-        self.Clr_number = Clr_number
-        self.Clr_name = Clr_name
-        self.Clr_hex = Clr_hex
-        self.Clr_switch = Clr_switch
-        self.Clr_master = Clr_master
+        self.clr_name = clr_name
+        self.clr_hex = clr_hex
+        self.clr_master = clr_master
         self.name_entry = name_entry
         self.hex_entry = hex_entry
-        Clr_table_row = Clr_table_row
-        Clr_table_column = Clr_table_column
+        clr_table_row = clr_table_row
+        clr_table_column = clr_table_column
         self.switch_var = switch_var
         self.color_fields = []
         self.hex_entry_fields = []
         self.switch_vars = []
         self.name_entry_fields = []
 
-    def CustClr_Widget(self, Clr_master, Clr_table_row, Clr_table_column):
+    def custclr_widget(self, clr_master, clr_table_row, clr_table_column):
+        """The CustClr Widget holds all the parts of the color tiles"""
 
-        Clr_widget_base = ctk.CTkFrame(master=Clr_master,
+        clr_widget_base = ctk.CTkFrame(master=clr_master,
                                        width=70,
                                        height=83,
                                        corner_radius=0,
                                        border_width=0,
                                        fg_color="#181818")
-        Clr_widget_base.grid(row=Clr_table_row, column=Clr_table_column, padx=4, pady=5)
+        clr_widget_base.grid(row=clr_table_row, column=clr_table_column, padx=4, pady=5)
 
-        self.name_entry = ctk.CTkEntry(master=Clr_widget_base,
-                                       placeholder_text=f"Color name",
+        self.name_entry = ctk.CTkEntry(master=clr_widget_base,
+                                       placeholder_text="Color name",
                                        font=("Roboto", 10),
                                        width=80,height=20,
                                        corner_radius=0,
@@ -57,7 +54,7 @@ class CustClr():
             print("switch toggled, current value:", self.switch_var.get())
 
         self.switch_var = ctk.StringVar(value="off")
-        self.switch = ctk.CTkSwitch(Clr_widget_base,
+        self.switch = ctk.CTkSwitch(clr_widget_base,
                                     text=" ",
                                     height=10,
                                     width=20,
@@ -72,7 +69,7 @@ class CustClr():
         self.switch.pack(anchor="center")
         self.switch_vars.append(self.switch_var)
 
-        color_field = ctk.CTkFrame(master=Clr_widget_base,
+        color_field = ctk.CTkFrame(master=clr_widget_base,
                                    width=20,
                                    height=20,
                                    corner_radius=4,
@@ -88,7 +85,7 @@ class CustClr():
                 entry.set(value[:limit])
 
         text_var = ctk.StringVar()
-        self.hex_entry = ctk.CTkEntry(master=Clr_widget_base,
+        self.hex_entry = ctk.CTkEntry(master=clr_widget_base,
                                       placeholder_text="HEX-Value",
                                       font=("Roboto", 10),
                                       textvariable=text_var,
@@ -125,60 +122,65 @@ class CustClr():
 
         self.hex_entry.bind("<Return>", create_lambda(color_field, self.hex_entry))
 
-        return Clr_widget_base
+        return clr_widget_base
 
     def activate_fields(self):
+        """When the color fields are initialized for the first time they are deactivated. 
+        This function activates them"""
         self.hex_entry.configure(state="normal")
         self.name_entry.configure(state="normal")
         self.switch.configure(state="normal")
 
     def deactivate_fields(self):
+        """And this one is used to deactivate them again when they are not supposed to be touched"""
         self.hex_entry.configure(state="disabled")
         self.name_entry.configure(state="disabled")
         self.switch.configure(state="disabled")
 
-    def update_color_field_xml(self, Clr_hex):
-
-        Clr_val = Clr_hex[1:]
+    def update_color_field_xml(self, clr_hex):
+        """Updating the color fields(hex values) with the XML extracted values"""
+        clr_val = clr_hex[1:]
 
         for color_field in self.color_fields:
-            color_field.configure(fg_color=Clr_hex)
+            color_field.configure(fg_color=clr_hex)
 
         for hex_entry in self.hex_entry_fields:
-            hex_entry.insert(0, Clr_val)
+            hex_entry.insert(0, clr_val)
 
-    def update_color_name_field_xml(self, Clr_name):
-
+    def update_color_name_field_xml(self, clr_name):
+        """Updating the color fields(names) with the XML extracted values"""
         for name_entry in self.name_entry_fields:
-            name_entry.insert(0, Clr_name)
+            name_entry.insert(0, clr_name)
 
     def update_switches(self, switch_states):
-
+        """Updating the color fields(switches) with the XML extracted values"""
         for switch_var in self.switch_vars:
             switch_var.set(switch_states)
 
     def build_name_string(self):
+        """Gathering color name from the color field"""
         name = self.name_entry.get()
         return name
 
     def build_hex_string(self):
+        """Gathering hex value from the color field"""
         hex_value = self.hex_entry.get()
         return hex_value
 
-    def clear_all_CustClr(self):
+    def clear_all_custclr(self):
+        """This is supposed to clear the custom color widgets completely"""
         base_color = "#181818"
         base_hex = ""
         base_name = ""
         base_switch_state = "off"
 
-        for color_field, hex_entry, name_entry, switch_var in zip(self.color_fields, self.hex_entry_fields, self.name_entry_fields, self.switch_vars):
+        for color_field, hex_entry, name_entry, switch_var in zip(self.color_fields,
+                                                                  self.hex_entry_fields,
+                                                                  self.name_entry_fields,
+                                                                  self.switch_vars):
             color_field.configure(fg_color=base_color)
             hex_entry.delete(0, tkinter.END)
             hex_entry.insert(0, base_hex)
             name_entry.delete(0, tkinter.END)
             name_entry.insert(0, base_name)
             switch_var.set(base_switch_state)
-
-    def get_switch_status(self):
-        for var in self.switch_vars:
-            print(var.get())
