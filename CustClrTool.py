@@ -64,7 +64,7 @@ def clrs_found(lbl):
 version_label = ctk.CTkLabel(master=bottom_bar,
                              width=200,
                              anchor="e",
-                             text="v 1.1",
+                             text="v 1.2",
                              padx=10,
                              text_color="#6D6D6D")
 version_label.pack(side="right")
