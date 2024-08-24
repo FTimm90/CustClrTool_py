@@ -1,14 +1,15 @@
-import tkinter
 import customtkinter as ctk
 
-class manualClass():
+class ManualClass():
+    """This class is for defining the labels that make up the explanation on the left side"""
     def __init__(self, manual_master):
 
         self.manual_master = manual_master
 
     def number_label(self, manual_master):
-        self.manual_number_label = ctk.CTkLabel(master=manual_master, 
-                                                font=("Roboto", 16, "bold"), 
+        """This is only the number for the explanation steps"""
+        self.manual_number_label = ctk.CTkLabel(master=manual_master,
+                                                font=("Roboto", 16, "bold"),
                                                 text_color="white",
                                                 width=10,
                                                 justify="left",
@@ -19,8 +20,9 @@ class manualClass():
         self.manual_number_label.pack(anchor="w")
 
     def text_label(self, manual_master):
-        self.manual_text_label = ctk.CTkLabel(master=manual_master, 
-                                              font=("Roboto", 12), 
+        """This is for the actual text of the explanation"""
+        self.manual_text_label = ctk.CTkLabel(master=manual_master,
+                                              font=("Roboto", 12),
                                               text_color="white",
                                               width=100,
                                               justify="left",

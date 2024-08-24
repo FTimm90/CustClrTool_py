@@ -1,20 +1,21 @@
-import customtkinter as ctk
 import tkinter
+import customtkinter as ctk
 
 class CustClr():
+    """This class is for constructing the color tiles and storing all necessary information"""
 
-    def __init__(self, 
+    def __init__(self,
                  Clr_master,
                  Clr_table_row,
                  Clr_table_column,
-                 Clr_number=None, 
-                 Clr_name=None, 
-                 Clr_hex=None, 
+                 Clr_number=None,
+                 Clr_name=None,
+                 Clr_hex=None,
                  Clr_switch=None,
                  name_entry=None,
                  hex_entry=None,
                  switch_var=None):
-        
+
         self.Clr_number = Clr_number
         self.Clr_name = Clr_name
         self.Clr_hex = Clr_hex
@@ -31,25 +32,24 @@ class CustClr():
         self.name_entry_fields = []
 
     def CustClr_Widget(self, Clr_master, Clr_table_row, Clr_table_column):
-        
+
         Clr_widget_base = ctk.CTkFrame(master=Clr_master,
                                        width=70,
-                                       height=83, 
-                                       corner_radius=0, 
-                                       border_width=0, 
+                                       height=83,
+                                       corner_radius=0,
+                                       border_width=0,
                                        fg_color="#181818")
         Clr_widget_base.grid(row=Clr_table_row, column=Clr_table_column, padx=4, pady=5)
 
-        self.name_entry = ctk.CTkEntry(master=Clr_widget_base, 
-                                  placeholder_text=f"Color name", 
-                                  font=("Roboto", 10), 
-                                  width=80, 
-                                  height=20, 
-                                  corner_radius=0, 
-                                  border_width=0, 
-                                  fg_color="#141414",
-                                  text_color="white",
-                                  state="disabled")
+        self.name_entry = ctk.CTkEntry(master=Clr_widget_base,
+                                       placeholder_text=f"Color name",
+                                       font=("Roboto", 10),
+                                       width=80,height=20,
+                                       corner_radius=0,
+                                       border_width=0,
+                                       fg_color="#141414",
+                                       text_color="white",
+                                       state="disabled")
         self.name_entry.pack(pady=2)
         self.name_entry_fields.append(self.name_entry)
 
@@ -57,27 +57,27 @@ class CustClr():
             print("switch toggled, current value:", self.switch_var.get())
 
         self.switch_var = ctk.StringVar(value="off")
-        self.switch = ctk.CTkSwitch(Clr_widget_base, 
-                                text=" ",
-                                height=10,
-                                width=20,
-                                switch_width=20,
-                                switch_height=10, 
-                                command=switch_event,
-                                variable=self.switch_var,
-                                onvalue="on", 
-                                progress_color="#76AE22",
-                                offvalue="off",
-                                state="disabled")
+        self.switch = ctk.CTkSwitch(Clr_widget_base,
+                                    text=" ",
+                                    height=10,
+                                    width=20,
+                                    switch_width=20,
+                                    switch_height=10,
+                                    command=switch_event,
+                                    variable=self.switch_var,
+                                    onvalue="on",
+                                    progress_color="#76AE22",
+                                    offvalue="off",
+                                    state="disabled")
         self.switch.pack(anchor="center")
         self.switch_vars.append(self.switch_var)
 
-        color_field = ctk.CTkFrame(master=Clr_widget_base, 
-                                   width=20, 
-                                   height=20, 
-                                   corner_radius=4, 
-                                   border_color="#6D6D6D", 
-                                   fg_color="#1f1f1f", 
+        color_field = ctk.CTkFrame(master=Clr_widget_base,
+                                   width=20,
+                                   height=20,
+                                   corner_radius=4,
+                                   border_color="#6D6D6D",
+                                   fg_color="#1f1f1f",
                                    border_width=1)
         color_field.pack(anchor="center")
         self.color_fields.append(color_field)
@@ -88,17 +88,17 @@ class CustClr():
                 entry.set(value[:limit])
 
         text_var = ctk.StringVar()
-        self.hex_entry = ctk.CTkEntry(master=Clr_widget_base, 
-                                 placeholder_text="HEX-Value", 
-                                 font=("Roboto", 10),
-                                 textvariable=text_var, 
-                                 width=70, 
-                                 height=15, 
-                                 corner_radius=0, 
-                                 border_width=0, 
-                                 fg_color="#141414",
-                                 text_color="white",
-                                 state="disabled")
+        self.hex_entry = ctk.CTkEntry(master=Clr_widget_base,
+                                      placeholder_text="HEX-Value",
+                                      font=("Roboto", 10),
+                                      textvariable=text_var,
+                                      width=70,
+                                      height=15,
+                                      corner_radius=0,
+                                      border_width=0,
+                                      fg_color="#141414",
+                                      text_color="white",
+                                      state="disabled")
         self.hex_entry.pack(pady=5)
         self.hex_entry_fields.append(self.hex_entry)
 
@@ -122,7 +122,7 @@ class CustClr():
 
         def create_lambda(color_field, hex_entry):
             return lambda event: on_hex_entry_confirm(color_field, hex_entry)
-        
+
         self.hex_entry.bind("<Return>", create_lambda(color_field, self.hex_entry))
 
         return Clr_widget_base
@@ -164,7 +164,7 @@ class CustClr():
     def build_hex_string(self):
         hex_value = self.hex_entry.get()
         return hex_value
-    
+
     def clear_all_CustClr(self):
         base_color = "#181818"
         base_hex = ""
