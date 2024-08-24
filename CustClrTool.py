@@ -1,4 +1,5 @@
-""" import necessary modules for interacting with files in the os, edit xml files and handling images"""
+""" import necessary modules for interacting 
+with files in the os, edit xml files and handling images"""
 import sys
 import os
 import xml.etree.ElementTree as ET
@@ -253,7 +254,7 @@ def optionmenu_callback(selection):
     selection = "ppt/theme/" + str(selection)
     print("Dropdown-selection:", selection)
     pptx_instance.xml_selection = selection
-    pptxClass.PptxFile.find_custClrLst(pptx_instance)
+    pptxClass.PptxFile.find_custclrlst(pptx_instance)
     for instance in CustClr_instances:
         instance.activate_fields()
     theme_name_label_func(theme_name_label)
@@ -262,7 +263,7 @@ def optionmenu_callback(selection):
 
 def theme_name_label_func(lbl):
     """Function for updating the theme name label and the color fields"""
-    filename_theme = str(pptx_instance.Theme_name)
+    filename_theme = str(pptx_instance.theme_name)
     lbl.configure(text=filename_theme)
 
     fg_color_list = pptx_instance.complete_color_list()
@@ -293,9 +294,7 @@ CustClr_instances = []
 for row in range(5):
     """This creates the table that holds the 50 color fields"""
     for column in range(10):
-        CustClr_instance = CustClrClass.CustClr(clr_master=Color_field_frame,
-                                                clr_table_row=row,
-                                                clr_table_column=column)
+        CustClr_instance = CustClrClass.CustClr()
         CustClr_instance.custclr_widget(clr_master=Color_field_frame,
                                         clr_table_row=row,
                                         clr_table_column=column)
@@ -340,6 +339,8 @@ def confirm():
         CURRENT_DROPDOWN.destroy()
         file_name_label.configure(text=" ")
         theme_name_label.configure(text=" ")
+        for instance in CustClr_instances:
+            instance.deactivate_fields()
     except (AttributeError, TypeError, ValueError, IOError, KeyError) as e:
         print(f"Custom colors could not be added: {e}")
         newtext = "Custom colors could not be added"

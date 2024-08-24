@@ -5,23 +5,16 @@ class CustClr():
     """This class is for constructing the color tiles and storing all necessary information"""
 
     def __init__(self,
-                 clr_master,
-                 clr_table_row,
-                 clr_table_column,
                  clr_name=None,
                  clr_hex=None,
                  name_entry=None,
-                 hex_entry=None,
-                 switch_var=None):
+                 hex_entry=None):
 
         self.clr_name = clr_name
         self.clr_hex = clr_hex
-        self.clr_master = clr_master
         self.name_entry = name_entry
         self.hex_entry = hex_entry
-        clr_table_row = clr_table_row
-        clr_table_column = clr_table_column
-        self.switch_var = switch_var
+
         self.color_fields = []
         self.hex_entry_fields = []
         self.switch_vars = []
