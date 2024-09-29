@@ -1,6 +1,7 @@
 import tkinter
 import customtkinter as ctk
 
+
 class CustClr():
     """This class is for constructing the color tiles and storing all necessary information"""
 
@@ -29,17 +30,17 @@ class CustClr():
                                        corner_radius=0,
                                        border_width=0,
                                        fg_color="#181818")
-        clr_widget_base.grid(row=clr_table_row, column=clr_table_column, padx=4, pady=5)
+        clr_widget_base.grid(
+            row=clr_table_row, column=clr_table_column, padx=4, pady=5)
 
         self.name_entry = ctk.CTkEntry(master=clr_widget_base,
                                        placeholder_text="Color name",
                                        font=("Roboto", 10),
-                                       width=80,height=20,
+                                       width=80, height=20,
                                        corner_radius=0,
                                        border_width=0,
                                        fg_color="#141414",
-                                       text_color="white",
-                                       state="disabled")
+                                       text_color="white")
         self.name_entry.pack(pady=2)
         self.name_entry_fields.append(self.name_entry)
 
@@ -57,8 +58,7 @@ class CustClr():
                                     variable=self.switch_var,
                                     onvalue="on",
                                     progress_color="#76AE22",
-                                    offvalue="off",
-                                    state="disabled")
+                                    offvalue="off")
         self.switch.pack(anchor="center")
         self.switch_vars.append(self.switch_var)
 
@@ -79,25 +79,25 @@ class CustClr():
 
         text_var = ctk.StringVar()
         self.hex_entry = ctk.CTkEntry(master=clr_widget_base,
-                                      placeholder_text="HEX-Value",
                                       font=("Roboto", 10),
                                       textvariable=text_var,
                                       width=70,
                                       height=15,
                                       corner_radius=0,
-                                      border_width=0,
+                                      border_width=1,
+                                      border_color="#6D6D6D",
                                       fg_color="#141414",
-                                      text_color="white",
-                                      state="disabled")
+                                      text_color="white")
         self.hex_entry.pack(pady=5)
         self.hex_entry_fields.append(self.hex_entry)
 
         character_limit = 6
-        text_var.trace_add("write", lambda *args: limit_characters(text_var, character_limit))
+        text_var.trace_add(
+            "write", lambda *args: limit_characters(text_var, character_limit))
 
         def update_color_field(color_field, hex_value):
             if not hex_value.startswith("#"):
-                hex_value = "#" + hex_value
+                hex_value = f"#{hex_value}"
             try:
                 if len(hex_value) == 7:
                     color_field.configure(fg_color=hex_value)
@@ -113,7 +113,8 @@ class CustClr():
         def create_lambda(color_field, hex_entry):
             return lambda event: on_hex_entry_confirm(color_field, hex_entry)
 
-        self.hex_entry.bind("<Return>", create_lambda(color_field, self.hex_entry))
+        self.hex_entry.bind("<Return>", create_lambda(
+            color_field, self.hex_entry))
 
         return clr_widget_base
 
@@ -152,13 +153,11 @@ class CustClr():
 
     def build_name_string(self):
         """Gathering color name from the color field"""
-        name = self.name_entry.get()
-        return name
+        return self.name_entry.get()
 
     def build_hex_string(self):
         """Gathering hex value from the color field"""
-        hex_value = self.hex_entry.get()
-        return hex_value
+        return self.hex_entry.get()
 
     def clear_all_custclr(self):
         """This is supposed to clear the custom color widgets completely"""

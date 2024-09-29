@@ -5,13 +5,15 @@ import xml.etree.ElementTree as ET
 from io import BytesIO
 from customtkinter import filedialog
 
+
 def map_child_to_parent(root):
     """Necessary function to correctly process xml structure"""
-    parent_map = {c:p for p in root.iter() for c in p}
-    return parent_map
+    return {c: p for p in root.iter() for c in p}
+
 
 class PptxFile():
     """This class is for storing PowerPoint file related data"""
+
     def __init__(self,
                  pptx_file=None,
                  pptx_format=None,
@@ -40,14 +42,15 @@ class PptxFile():
         if self.pptx_file:
             self.pptx_file = None
 
-        self.pptx_file = filedialog.askopenfilename(filetypes=[("PowerPoint Files", "*.pptx *.potx")])
+        self.pptx_file = filedialog.askopenfilename(
+            filetypes=[("PowerPoint Files", "*.pptx *.potx")])
 
         if self.pptx_file is not None:
             self.pptx_path, self.pptx_format = os.path.splitext(self.pptx_file)
 
-            self.zip_filename = self.pptx_path + ".zip"
+            self.zip_filename = f"{self.pptx_path}.zip"
             os.rename(self.pptx_file, self.zip_filename)
-            print("File has been renamed to: " + self.zip_filename)
+            print(f"File has been renamed to: {self.zip_filename}")
 
             """Finding theme xml files"""
             self.found_themes = []
@@ -59,7 +62,10 @@ class PptxFile():
                         self.found_themes.append(os.path.basename(file))
                         print(f"Found themes: {self.found_themes}")
 
-        print("the file format is " + self.pptx_format + " and the file name is " + self.pptx_path + self.pptx_format)
+        print(
+            f"the file format is {self.pptx_format} and the file name is {
+                self.pptx_path}{self.pptx_format}"
+        )
         return self.pptx_path, self.pptx_format, self.pptx_file, self.zip_filename, self.found_themes
 
     def register_all_namespaces(self, xml_data):
@@ -75,7 +81,7 @@ class PptxFile():
 
     def find_custclrlst(self):
         """Function for finding and extracting existing custom colors from the theme.xml"""
-        with ZipFile(self.zip_filename, "a") as zip:
+        with ZipFile(self.zip_filename, "a") as zip:  # type: ignore
             with zip.open(self.xml_selection) as theme_xml:
                 xml_data = theme_xml.read()
                 namespaces = self.register_all_namespaces(xml_data)
@@ -100,13 +106,16 @@ class PptxFile():
 
                 custClrLst_var = root.find(".//a:custClrLst", namespaces)
                 if custClrLst_var is not None:
-                    self.hex_colorlist = [custClr.get("val") for custClr in custClrLst_var.findall(".//a:srgbClr", namespaces)]
-                    self.hex_namelist = [custClr.get("name") for custClr in custClrLst_var.findall(".//a:custClr", namespaces) if custClr.get("name") is not None]
+                    self.hex_colorlist = [custClr.get(
+                        "val") for custClr in custClrLst_var.findall(".//a:srgbClr", namespaces)]
+                    self.hex_namelist = [custClr.get("name") for custClr in custClrLst_var.findall(
+                        ".//a:custClr", namespaces) if custClr.get("name") is not None]
                     print(f"Existing custom colors: {self.hex_colorlist}")
                     print(f"Existing custom color names: {self.hex_namelist}")
                     return self.hex_colorlist, self.theme_name, self.hex_namelist
                 else:
-                    print(f"There are no existing custom colors in {self.xml_selection}.")
+                    print(f"There are no existing custom colors in {
+                          self.xml_selection}.")
                     return [], self.theme_name
 
     def complete_color_list(self):
@@ -124,7 +133,8 @@ class PptxFile():
         base_name_element = ""
         self.full_name_list = [base_name_element] * 50
         replacement_number = len(self.hex_namelist)
-        print("The numer of color names in the theme is: " + str(replacement_number))
+        print(f"The numer of color names in the theme is: {
+              replacement_number}")
         self.full_name_list[:replacement_number] = self.hex_namelist
         return self.full_name_list
 
@@ -134,8 +144,9 @@ class PptxFile():
         changed_state_element = "on"
         full_state_list = [base_state_element] * 50
         replacement_number = len(self.hex_colorlist)
-        print("The numer of hex values in the theme is: " + str(replacement_number))
-        full_state_list[:replacement_number] = [changed_state_element] * replacement_number
+        print(f"The numer of hex values in the theme is: {replacement_number}")
+        full_state_list[:replacement_number] = [
+            changed_state_element] * replacement_number
         return full_state_list
 
     def file_output(self, colors_string, theme_selection):
@@ -149,14 +160,16 @@ class PptxFile():
 
                         self.register_all_namespaces(xml_data)
                         root = ET.fromstring(xml_data)
-                        parent_map = map_child_to_parent(root) 
+                        parent_map = map_child_to_parent(root)
 
-                        extlst_element = root.find(".//a:extLst", namespaces={"a": "http://schemas.openxmlformats.org/drawingml/2006/main"})
+                        extlst_element = root.find(
+                            ".//a:extLst", namespaces={"a": "http://schemas.openxmlformats.org/drawingml/2006/main"})
                         if extlst_element is None:
                             extlst_element = ET.SubElement(root, "a:extLst")
-                            print("a:extLst element created") 
+                            print("a:extLst element created")
 
-                        cstclr_exist = root.find(".//a:custClrLst", namespaces={"a": "http://schemas.openxmlformats.org/drawingml/2006/main"})
+                        cstclr_exist = root.find(
+                            ".//a:custClrLst", namespaces={"a": "http://schemas.openxmlformats.org/drawingml/2006/main"})
                         if cstclr_exist is not None:
                             parent_of_cstclr = parent_map[cstclr_exist]
                             parent_of_cstclr.remove(cstclr_exist)
@@ -173,7 +186,8 @@ class PptxFile():
 
                         xml_bytes = BytesIO()
                         tree = ET.ElementTree(root)
-                        tree.write(xml_bytes, encoding="utf-8", xml_declaration=True)
+                        tree.write(xml_bytes, encoding="utf-8",
+                                   xml_declaration=True)
                         modified_xml_data = xml_bytes.getvalue()
 
                         new_zip.writestr(item, modified_xml_data)

@@ -7,6 +7,7 @@ import customtkinter as ctk
 from PIL import Image
 from modules import *
 
+
 def resource_path(relative_path):
     """Function setting the resource path"""
     try:
@@ -15,10 +16,11 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+
 window = ctk.CTk()
 window.geometry("1200x800")
 window.title("CustClr Tool")
-window.resizable(width=False, height=False)
+# window.resizable(width=False, height=False)
 
 bottom_bar = ctk.CTkFrame(master=window,
                           height=20,
@@ -36,42 +38,42 @@ output_label.pack(side="left")
 
 """Text updates for output label"""
 
+
 def file_opened(lbl):
     """Display 'file opened' event message in output label """
     themenumber = len(pptx_instance.found_themes)
     if themenumber > 0:
         str_end = ""
-        if themenumber >= 2:
-            str_end = "themes"
-        else:
-            str_end = "theme"
-        newtext = "File opened, " + str(themenumber) + " " + str_end + " found"
-        lbl.configure(text=newtext)
+        str_end = "themes" if themenumber >= 2 else "theme"
+        newtext = f"File opened, {themenumber} {str_end} found"
     else:
         newtext = "No themes found"
-        lbl.configure(text=newtext)
+
+    lbl.configure(text=newtext)
+
 
 def clrs_found(lbl):
     """Display 'Custom colors found' event message in output label """
     cstclrs_found = len(pptx_instance.hex_colorlist)
     if cstclrs_found > 0:
-        newtext = str(cstclrs_found) + " custom colors found"
-        lbl.configure(text=newtext)
+        newtext = f"{cstclrs_found} custom colors found"
     else:
         newtext = "No existing custom colors found"
-        lbl.configure(text=newtext)
+
+    lbl.configure(text=newtext)
+
 
 version_label = ctk.CTkLabel(master=bottom_bar,
                              width=200,
                              anchor="e",
-                             text="v 1.2",
+                             text="v 1.3",
                              padx=10,
                              text_color="#6D6D6D")
 version_label.pack(side="right")
 
-bottom_divider_line = ctk.CTkFrame(master=window, 
-                           height=1,
-                           fg_color="#ffffff")
+bottom_divider_line = ctk.CTkFrame(master=window,
+                                   height=1,
+                                   fg_color="#ffffff")
 bottom_divider_line.pack(side="bottom", fill="x")
 
 left_frame = ctk.CTkFrame(master=window,
@@ -146,6 +148,9 @@ step_4_text.manual_text_label.configure(text=STEP_4)
 
 WARNING_TEXT = """Note: To avoid unintended changes, please work on a copy of your presentation.
 
+The tool only works correctly when the executable and the presentation are located on the same drive. 
+Attempting to run the tool from your desktop while modifying a presentation on a USB drive, for instance, will result in an error.
+
 If you close the tool without confirming your changes, the presentation file might become corrupted with a .zip extension. You can easily restore it to its original format. 
 
 Important: Ensure the presentation is closed before adding custom colors."""
@@ -181,12 +186,14 @@ button_label_container.pack(pady=30, padx=40, anchor="w")
 pptx_instance = pptxClass.PptxFile()
 
 open_file_button = ctk.CTkButton(master=button_label_container,
-                                 command=lambda:[clear_color_fields(),
-                                                 pptx_instance.open_file(),
-                                                 create_dropdown(),
-                                                 pptx_file_name_label(file_name_label),
-                                                 clear_name_label_func(theme_name_label),
-                                                 file_opened(output_label)],
+                                 command=lambda: [clear_color_fields(),
+                                                  pptx_instance.open_file(),
+                                                  create_dropdown(),
+                                                  pptx_file_name_label(
+                                     file_name_label),
+                                     clear_name_label_func(
+                                     theme_name_label),
+                                     file_opened(output_label)],
                                  text="choose file",
                                  width=100,
                                  height=30,
@@ -204,10 +211,13 @@ file_name_label = ctk.CTkLabel(master=button_label_container,
                                text=" ")
 file_name_label.pack(side="left", padx=20)
 
+
 def pptx_file_name_label(lbl):
     """This is the label that displays the name of the opened PowerPoint file"""
-    filename = str(pptx_instance.pptx_path).rsplit('/', maxsplit=1)[-1] + str(pptx_instance.pptx_format)
+    filename = str(pptx_instance.pptx_path).rsplit(
+        '/', maxsplit=1)[-1] + str(pptx_instance.pptx_format)
     lbl.configure(text=filename)
+
 
 dropdown_label_container = ctk.CTkFrame(master=content_area,
                                         corner_radius=0,
@@ -232,6 +242,7 @@ theme_name_label.pack(side="left", padx=20)
 
 CURRENT_DROPDOWN = None
 
+
 def create_dropdown():
     """Function for creating the theme.xml choice dropdown menu"""
     global CURRENT_DROPDOWN
@@ -249,9 +260,10 @@ def create_dropdown():
     optionmenu.pack(anchor="w")
     CURRENT_DROPDOWN = optionmenu
 
+
 def optionmenu_callback(selection):
     """Function for getting the theme selection from the dropdown menu"""
-    selection = "ppt/theme/" + str(selection)
+    selection = f"ppt/theme/{str(selection)}"
     print("Dropdown-selection:", selection)
     pptx_instance.xml_selection = selection
     pptxClass.PptxFile.find_custclrlst(pptx_instance)
@@ -260,6 +272,7 @@ def optionmenu_callback(selection):
     theme_name_label_func(theme_name_label)
     clrs_found(output_label)
     return selection
+
 
 def theme_name_label_func(lbl):
     """Function for updating the theme name label and the color fields"""
@@ -279,10 +292,12 @@ def theme_name_label_func(lbl):
     for instance, switch_state in zip(CustClr_instances, switch_states):
         instance.update_switches(switch_states=switch_state)
 
+
 def clear_name_label_func(lbl):
     """Function for clearing the filename label in case a new file should be opened"""
     filename_theme = " "
     lbl.configure(text=filename_theme)
+
 
 Color_field_frame = ctk.CTkFrame(master=content_area,
                                  fg_color="#181818",
@@ -300,9 +315,11 @@ for row in range(5):
                                         clr_table_column=column)
         CustClr_instances.append(CustClr_instance)
 
+
 def construct_output_strings(CustClr_instances):
     """This function collects all necessary date and creates the output data for the .xml file"""
-    root = ET.Element("a:custClrLst", nsmap={"a": "http://schemas.openxmlformats.org/drawingml/2006/main"})
+    root = ET.Element("a:custClrLst", nsmap={
+                      "a": "http://schemas.openxmlformats.org/drawingml/2006/main"})  # type: ignore
 
     for instance in CustClr_instances:
         if instance.switch_var.get() == "on" and instance.build_hex_string():
@@ -317,16 +334,20 @@ def construct_output_strings(CustClr_instances):
             del elem.attrib["nsmap"]
     return root
 
+
 def final_output_function():
     """This function executes a collection of functions for the final output"""
     final_xml_tree = construct_output_strings(CustClr_instances)
     theme = pptx_instance.xml_selection
-    pptx_instance.file_output(colors_string=final_xml_tree, theme_selection=theme)
+    pptx_instance.file_output(
+        colors_string=final_xml_tree, theme_selection=theme)
+
 
 def clear_color_fields():
     """This function is for clearing the color fields if a new file is opened"""
     for instance in CustClr_instances:
         instance.clear_all_custclr()
+
 
 def confirm():
     """Confirmation function for the actual confirm button"""
@@ -346,6 +367,7 @@ def confirm():
         newtext = "Custom colors could not be added"
         output_label.configure(text=newtext)
 
+
 confirm_button = ctk.CTkButton(master=content_area,
                                command=confirm,
                                text="Confirm",
@@ -357,5 +379,8 @@ confirm_button = ctk.CTkButton(master=content_area,
                                border_width=1,
                                corner_radius=4)
 confirm_button.pack(pady=30, padx=40, anchor="w")
+
+for instance in CustClr_instances:
+    instance.deactivate_fields()
 
 window.mainloop()

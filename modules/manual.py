@@ -1,7 +1,9 @@
 import customtkinter as ctk
 
+
 class ManualClass():
     """This class is for defining the labels that make up the explanation on the left side"""
+
     def __init__(self, manual_master):
 
         self.manual_master = manual_master
