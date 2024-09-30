@@ -186,8 +186,7 @@ button_label_container.pack(pady=30, padx=40, anchor="w")
 pptx_instance = pptxClass.PptxFile()
 
 open_file_button = ctk.CTkButton(master=button_label_container,
-                                 command=lambda: [clear_color_fields(),
-                                                  pptx_instance.open_file(),
+                                 command=lambda: [pptx_instance.open_file(),
                                                   create_dropdown(),
                                                   pptx_file_name_label(
                                      file_name_label),

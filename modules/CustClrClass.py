@@ -37,8 +37,9 @@ class CustClr():
                                        placeholder_text="Color name",
                                        font=("Roboto", 10),
                                        width=80, height=20,
-                                       corner_radius=0,
-                                       border_width=0,
+                                       corner_radius=4,
+                                       border_width=1,
+                                       border_color="#6D6D6D",
                                        fg_color="#141414",
                                        text_color="white")
         self.name_entry.pack(pady=2)
@@ -83,7 +84,7 @@ class CustClr():
                                       textvariable=text_var,
                                       width=70,
                                       height=15,
-                                      corner_radius=0,
+                                      corner_radius=4,
                                       border_width=1,
                                       border_color="#6D6D6D",
                                       fg_color="#141414",
