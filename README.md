@@ -1,3 +1,5 @@
+# This version of this tool is outdated. [The new version can be found here](https://github.com/FTimm90/custclrtool)
+---
 
 <img src="./doc_img/tool_GUI.png">
 
